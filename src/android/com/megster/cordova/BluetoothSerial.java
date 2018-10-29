@@ -116,7 +116,7 @@ public class BluetoothSerial extends CordovaPlugin {
         }
         else if (action.equals(CONNECTUUID)) {
 
-            boolean secure = true;
+            boolean secure = false;
             connect(args, secure, callbackContext);
 
         }  else if (action.equals(CONNECT_INSECURE)) {
