@@ -346,9 +346,9 @@ public class BluetoothSerial extends CordovaPlugin {
         String macAddress = args.getString(0);
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(macAddress);
 
-        callbackContext.error("Could not connect to " + macAddress + " args.getString(1)" );
-    }
-/*
+        //callbackContext.error("Could not connect to " + macAddress + " args.getString(1)" );
+
+
             if (device != null) {
                 connectCallback = callbackContext;
                 bluetoothSerialService.connect(device, secure, args.getString(1));
@@ -362,7 +362,7 @@ public class BluetoothSerial extends CordovaPlugin {
                 callbackContext.error("Could not connect to " + macAddress);
             }
 
-            if (device != null) {
+     /*       if (device != null) {
                 connectCallback = callbackContext;
                 bluetoothSerialService.connect(device, secure);
                 buffer.setLength(0);
@@ -374,9 +374,9 @@ public class BluetoothSerial extends CordovaPlugin {
             } else {
                 callbackContext.error("Could not connect to " + macAddress);
             }
-}
-*/
 
+*/
+    }
 
 
 
