@@ -113,6 +113,11 @@ public class BluetoothSerial extends CordovaPlugin {
 
             boolean secure = true;
             connect(args, secure, callbackContext);
+        }
+        else if (action.equals(CONNECTUUID)) {
+
+            boolean secure = true;
+            connect(args, secure, callbackContext);
 
         }  else if (action.equals(CONNECT_INSECURE)) {
 
@@ -341,12 +346,11 @@ public class BluetoothSerial extends CordovaPlugin {
         String macAddress = args.getString(0);
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(macAddress);
 
-        String[] macuuid = macAddress.split("+");
-        if(macuuid.length > 1){
-            String uuid = macuuid[1];
+
+
             if (device != null) {
                 connectCallback = callbackContext;
-                bluetoothSerialService.connect(device, secure, uuid);
+                bluetoothSerialService.connect(device, secure, args.getString(1));
                 buffer.setLength(0);
 
                 PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
@@ -356,9 +360,8 @@ public class BluetoothSerial extends CordovaPlugin {
             } else {
                 callbackContext.error("Could not connect to " + macAddress);
             }
-        }
-        else{
-            if (device != null) {
+
+           /* if (device != null) {
                 connectCallback = callbackContext;
                 bluetoothSerialService.connect(device, secure);
                 buffer.setLength(0);
@@ -370,8 +373,8 @@ public class BluetoothSerial extends CordovaPlugin {
             } else {
                 callbackContext.error("Could not connect to " + macAddress);
             }
-        }
 
+*/
 
     }
 
