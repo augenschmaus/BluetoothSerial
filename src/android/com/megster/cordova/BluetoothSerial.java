@@ -374,10 +374,10 @@ public class BluetoothSerial extends CordovaPlugin {
             } else {
                 callbackContext.error("Could not connect to " + macAddress);
             }
-
+}
 */
 
-    }
+
 
 
     // The Handler that gets information back from the BluetoothSerialService
