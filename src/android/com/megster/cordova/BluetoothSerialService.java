@@ -133,7 +133,22 @@ public class BluetoothSerialService {
         mConnectThread.start();
         setState(STATE_CONNECTING);
     }
+    public synchronized void connect(BluetoothDevice device, boolean secure, String uuid) {
+        if (D) Log.d(TAG, "connect to: " + device);
 
+        // Cancel any thread attempting to make a connection
+        if (mState == STATE_CONNECTING) {
+            if (mConnectThread != null) {mConnectThread.cancel(); mConnectThread = null;}
+        }
+
+        // Cancel any thread currently running a connection
+        if (mConnectedThread != null) {mConnectedThread.cancel(); mConnectedThread = null;}
+
+        // Start the thread to connect with the given device
+        mConnectThread = new ConnectThread(device, secure, uuid);
+        mConnectThread.start();
+        setState(STATE_CONNECTING);
+    }
     /**
      * Start the ConnectedThread to begin managing a Bluetooth connection
      * @param socket  The BluetoothSocket on which the connection was made
@@ -352,6 +367,25 @@ public class BluetoothSerialService {
                 } else {
                     //tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);
                     tmp = device.createInsecureRfcommSocketToServiceRecord(UUID_SPP);
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);
+            }
+            mmSocket = tmp;
+        }
+        public ConnectThread(BluetoothDevice device, boolean secure, String uuid) {
+            mmDevice = device;
+            BluetoothSocket tmp = null;
+            mSocketType = secure ? "Secure" : "Insecure";
+
+            // Get a BluetoothSocket for a connection with the given BluetoothDevice
+            try {
+                if (secure) {
+                    // tmp = device.createRfcommSocketToServiceRecord(MY_UUID_SECURE);
+                    tmp = device.createRfcommSocketToServiceRecord(uuid);
+                } else {
+                    //tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);
+                    tmp = device.createInsecureRfcommSocketToServiceRecord(uuid);
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Socket Type: " + mSocketType + "create() failed", e);
