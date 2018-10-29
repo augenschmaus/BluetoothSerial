@@ -341,7 +341,7 @@ public class BluetoothSerial extends CordovaPlugin {
         String macAddress = args.getString(0);
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(macAddress);
 
-        String[] macuuid = macAddress.split('+');
+        String[] macuuid = macAddress.split("+");
         if(macuuid.length > 1){
             String uuid = macuuid[1];
             if (device != null) {
