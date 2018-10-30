@@ -117,7 +117,7 @@ public class BluetoothSerial extends CordovaPlugin {
         else if (action.equals(CONNECTUUID)) {
 
             boolean secure = false;
-            connect(args, secure, callbackContext);
+            connectuuid(args, secure, callbackContext);
 
         }  else if (action.equals(CONNECT_INSECURE)) {
 
@@ -346,23 +346,7 @@ public class BluetoothSerial extends CordovaPlugin {
         String macAddress = args.getString(0);
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(macAddress);
 
-        //callbackContext.error("Could not connect to " + macAddress + " args.getString(1)" );
-
-
-            if (device != null) {
-                connectCallback = callbackContext;
-                bluetoothSerialService.connect(device, secure, args.getString(1));
-                buffer.setLength(0);
-
-                PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
-                result.setKeepCallback(true);
-                callbackContext.sendPluginResult(result);
-
-            } else {
-                callbackContext.error("Could not connect to " + macAddress);
-            }
-
-     /*       if (device != null) {
+             if (device != null) {
                 connectCallback = callbackContext;
                 bluetoothSerialService.connect(device, secure);
                 buffer.setLength(0);
@@ -375,10 +359,23 @@ public class BluetoothSerial extends CordovaPlugin {
                 callbackContext.error("Could not connect to " + macAddress);
             }
 
-*/
     }
 
+    private void connectuuid(CordovaArgs args, boolean secure, CallbackContext callbackContext) throws JSONException {
+        String macAddress = args.getString(0);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(macAddress);
 
+        if (device != null) {
+            connectCallback = callbackContext;
+            bluetoothSerialService.connect(device, secure, args.getString(1));
+            buffer.setLength(0);
+            PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+            result.setKeepCallback(true);
+            callbackContext.sendPluginResult(result);
+        } else {
+            callbackContext.error("Could not connect to " + macAddress);
+        }
+    }
 
     // The Handler that gets information back from the BluetoothSerialService
     // Original code used handler for the because it was talking to the UI.
